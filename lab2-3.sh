@@ -1,13 +1,16 @@
 #!/bin/sh
 weight=$1
-height=$2
-total_height=`expr $height \* $height`
-bmi=`expr $weight/$total_height | bc`
+height=`expr "scale=2; $2/100" | bc`
+total_height=`expr "scale=2; $height*$height" | bc`
+bmi=`expr "scale=2; $weight/$total_height" | bc`
 echo "$bmi"
-if [ $bmi -lt 18.5 ]
+
+first="18.5"
+second="23"
+if [ 1 -eq "$(echo "$bmi < $first" | bc)" ]
 then
 	echo "저체중"
-elif [ $bmi -ge 23 ]
+elif [ 1 -eq "$(echo "$bmi >= $second" | bc)" ]
 then
 	echo "과체중"
 else
